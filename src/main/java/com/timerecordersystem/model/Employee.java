@@ -4,6 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Classe que representa as informações do funcionário.
+ * 
+ * @author ezequias.oliveira
+ *
+ */
 @Entity
 @Table(name = "employee")
 public class Employee extends AbstractEntity {
