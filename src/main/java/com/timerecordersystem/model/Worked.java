@@ -24,7 +24,7 @@ public class Worked extends AbstractEntity{
 	private static final long serialVersionUID = 1868284541090263513L;
 	@ManyToOne
 	private Employee employee;
-	@Column(name="momment")
+	@Column(name="momment", nullable = false)
 	private LocalDate momment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<TimeRecorder> records;

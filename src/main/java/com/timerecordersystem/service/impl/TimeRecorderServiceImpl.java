@@ -1,5 +1,7 @@
 package com.timerecordersystem.service.impl;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,10 +33,30 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 			this.workedService.create(worked);
 		}
 		
+		// valida patida do ponto
+		if (this.isExistsRecorded(worked, timeRecorder.getMomment())) {
+			// TODO - mensagem informando que o ponto já foi batido
+		}
+		
 		timeRecorder.setWorked(worked);
 		
 		// registra o batida do ponto
 		this.timeRecorderDAO.save(timeRecorder);
+	}
+
+	/**
+	 * Valida se o ponto já foi batido no minuto atual.<br>
+	 * Obs. só é permitido uma batida por minuto.
+	 * 
+	 * @param worked
+	 * @param momment
+	 * @return {@link Boolean}
+	 */
+	private Boolean isExistsRecorded(final Worked worked, final LocalDateTime momment) {
+		// TODO - corrigir consulta
+		final TimeRecorder timeRecorder = this.timeRecorderDAO.findByWorkedAndMomment(worked, momment);
+		
+		return (timeRecorder != null ? Boolean.TRUE : Boolean.FALSE);
 	}
 	
 }

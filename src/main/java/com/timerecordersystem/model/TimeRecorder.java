@@ -20,13 +20,18 @@ public class TimeRecorder extends AbstractEntity {
 	private static final long serialVersionUID = 905382826752249478L;
 	@ManyToOne
 	private Worked worked;
-	@Column(name="momment")
+	@Column(name="momment", nullable = false)
 	private LocalDateTime momment;
 	
 	public TimeRecorder() {
 		super();
 	}
 	
+	public TimeRecorder(LocalDateTime momment) {
+		super();
+		this.momment = momment;
+	}
+
 	public TimeRecorder(Worked worked, LocalDateTime momment) {
 		super();
 		this.worked = worked;
