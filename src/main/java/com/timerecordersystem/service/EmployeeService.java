@@ -27,13 +27,6 @@ public interface EmployeeService {
 	public Employee update(Employee employee);
 	
 	/**
-	 * Deleta o funcionário.
-	 * 
-	 * @param employee
-	 */
-	public void delete(Employee employee);
-	
-	/**
 	 * Busca o funcionário pelo id.
 	 * 
 	 * @param id

@@ -24,11 +24,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void delete(final Employee employee) {
-		this.employeeDAO.delete(employee);
-	}
-
-	@Override
 	public Employee findById(final Long id) {
 		return this.employeeDAO.findById(id).orElse(null);
 	}
