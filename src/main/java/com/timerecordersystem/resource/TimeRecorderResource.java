@@ -1,6 +1,6 @@
 package com.timerecordersystem.resource;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * Classe auxiliar para registro do ponto.
@@ -10,23 +10,17 @@ import java.sql.Date;
  */
 public class TimeRecorderResource {
 
-	private Date momment;
+	private LocalDateTime momment;
 	private Long idEmployee;
 	
 	public TimeRecorderResource() {
 		super();
 	}
 	
-	public TimeRecorderResource(Date momment, Long idEmployee) {
-		super();
-		this.momment = momment;
-		this.idEmployee = idEmployee;
-	}
-
-	public Date getMomment() {
+	public LocalDateTime getMomment() {
 		return momment;
 	}
-	public void setMomment(Date momment) {
+	public void setMomment(LocalDateTime momment) {
 		this.momment = momment;
 	}
 	public Long getIdEmployee() {

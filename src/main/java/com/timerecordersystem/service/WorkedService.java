@@ -1,6 +1,6 @@
 package com.timerecordersystem.service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.timerecordersystem.model.Employee;
 import com.timerecordersystem.model.Worked;
@@ -28,5 +28,5 @@ public interface WorkedService {
 	 * @param momment
 	 * @return {@link Worked}
 	 */
-	public Worked findByEmployeeAndMomment(Employee employee, Date momment);
+	public Worked findByEmployeeAndMomment(Employee employee, LocalDate momment);
 }

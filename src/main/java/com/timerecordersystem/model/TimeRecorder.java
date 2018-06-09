@@ -1,13 +1,11 @@
 package com.timerecordersystem.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Classe que representa a batida do ponto.
@@ -23,14 +21,13 @@ public class TimeRecorder extends AbstractEntity {
 	@ManyToOne
 	private Worked worked;
 	@Column(name="momment")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date momment;
+	private LocalDateTime momment;
 	
 	public TimeRecorder() {
 		super();
 	}
 	
-	public TimeRecorder(Worked worked, Date momment) {
+	public TimeRecorder(Worked worked, LocalDateTime momment) {
 		super();
 		this.worked = worked;
 		this.momment = momment;
@@ -42,10 +39,10 @@ public class TimeRecorder extends AbstractEntity {
 	public void setWorked(Worked worked) {
 		this.worked = worked;
 	}
-	public Date getMomment() {
+	public LocalDateTime getMomment() {
 		return momment;
 	}
-	public void setMomment(Date momment) {
+	public void setMomment(LocalDateTime momment) {
 		this.momment = momment;
 	}
 

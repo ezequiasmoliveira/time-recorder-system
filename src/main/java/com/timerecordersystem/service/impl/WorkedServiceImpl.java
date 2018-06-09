@@ -1,6 +1,6 @@
 package com.timerecordersystem.service.impl;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class WorkedServiceImpl implements WorkedService {
 	}
 
 	@Override
-	public Worked findByEmployeeAndMomment(final Employee employee, final Date momment) {
+	public Worked findByEmployeeAndMomment(final Employee employee, final LocalDate momment) {
 		return this.workedDAO.findByEmployeeAndMomment(employee, momment);
 	}
 
