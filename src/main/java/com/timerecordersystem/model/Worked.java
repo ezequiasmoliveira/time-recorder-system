@@ -1,6 +1,6 @@
 package com.timerecordersystem.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,8 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Classe que representa o dia trabalhado pelo funcionário.
@@ -26,9 +24,8 @@ public class Worked extends AbstractEntity{
 	private static final long serialVersionUID = 1868284541090263513L;
 	@ManyToOne
 	private Employee employee;
-	@Column(name="momment")
-	@Temporal(TemporalType.DATE)
-	private Date momment;
+	@Column(name="momment", nullable = false)
+	private LocalDate momment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<TimeRecorder> records;
 	
@@ -36,11 +33,10 @@ public class Worked extends AbstractEntity{
 		super();
 	}
 	
-	public Worked(Employee employee, Date momment, List<TimeRecorder> records) {
+	public Worked(Employee employee, LocalDate momment) {
 		super();
 		this.employee = employee;
 		this.momment = momment;
-		this.records = records;
 	}
 
 	public Employee getEmployee() {
@@ -49,10 +45,10 @@ public class Worked extends AbstractEntity{
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	public Date getMomment() {
+	public LocalDate getMomment() {
 		return momment;
 	}
-	public void setMomment(Date momment) {
+	public void setMomment(LocalDate momment) {
 		this.momment = momment;
 	}
 	public List<TimeRecorder> getRecords() {
