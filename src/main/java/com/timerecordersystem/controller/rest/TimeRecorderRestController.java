@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timerecordersystem.model.Employee;
+import com.timerecordersystem.model.TimeRecorder;
 import com.timerecordersystem.resource.TimeRecorderResource;
 import com.timerecordersystem.service.EmployeeService;
+import com.timerecordersystem.service.TimeRecorderService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,9 @@ import io.swagger.annotations.ApiOperation;
 public class TimeRecorderRestController {
 	
 	@Autowired
-	private EmployeeService employeeService; 
+	private EmployeeService employeeService;
+	@Autowired
+	private TimeRecorderService timeRecorderService;
 	
 	/**
 	 * Registra batida do ponto.
@@ -34,10 +38,9 @@ public class TimeRecorderRestController {
 	public ResponseEntity<?> recorder(@RequestBody TimeRecorderResource resource){
 		final Employee employee = this.employeeService.findById(resource.getIdEmployee());
 		
+		this.timeRecorderService.recorder(employee, new TimeRecorder(resource.getMomment()));
 		
-		
-		
-		
+		// TODO - implementar mensagem de resposta
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
