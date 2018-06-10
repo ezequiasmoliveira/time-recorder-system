@@ -1,6 +1,8 @@
 package com.timerecordersystem.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,16 @@ public class WorkedServiceImpl implements WorkedService {
 
 	@Override
 	public List<Worked> listDaysWorked(final Employee employee, final LocalDate momment) {
+		final LocalDate lastDayOfTheMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+		
+		final LocalDate firstMommet = LocalDate.of(momment.getYear(), momment.getMonth(), 01);
+		final LocalDate lastMomment = LocalDate.of(momment.getYear(), momment.getMonth(), lastDayOfTheMonth.getDayOfMonth());
+		
+		return this.workedDAO.findByMommentBetweenAndEmployee(firstMommet, lastMomment, employee);
+	}
+
+	@Override
+	public List<Worked> listByEmployeeAndMomment(final Employee employee, final LocalDate momment) {
 		List<Worked> workeds = new ArrayList<>();
 		
 		if (momment == null) {
