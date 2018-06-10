@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import com.timerecordersystem.model.Worked;
 public class CalculationServiceImpl implements CalculationService {
 
 	@Override
-	public Long breakTime(final LinkedList<TimeRecorder> records) {
+	public Long breakTime(final List<TimeRecorder> records) {
 		final Long minutes = this.calculateMinutesWorked(records);
 		
 		return this.calculateBreak(minutes / 60);
@@ -55,7 +56,7 @@ public class CalculationServiceImpl implements CalculationService {
 	 * @param calculateNightWork indica se deve calcular adicional noturno
 	 * @return tempo trabalhado, em milissegundos {@link Long}
 	 */
-	private Long calculateTimeWorked(final LinkedList<TimeRecorder> records, final Boolean calculateNightWork) {
+	private Long calculateTimeWorked(final List<TimeRecorder> records, final Boolean calculateNightWork) {
 		LocalDateTime referenceDate = null;
 		Long workTime = 0L;
 		Long timeNightWork = 0L;
@@ -123,7 +124,7 @@ public class CalculationServiceImpl implements CalculationService {
 	 * @param records batidas registrada
 	 * @return quantidade de minutos {@link Long}
 	 */
-	private Long calculateMinutesWorked(final LinkedList<TimeRecorder> records) {
+	private Long calculateMinutesWorked(final List<TimeRecorder> records) {
 		
 		LocalDateTime referenceDate = null;
 		Long workTime = 0L;

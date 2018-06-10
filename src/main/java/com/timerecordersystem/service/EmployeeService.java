@@ -33,5 +33,13 @@ public interface EmployeeService {
 	 * @return {@link Employee}
 	 */
 	public Employee findById(Long id);
+	
+	/**
+	 * Busca o funcionário pelo pis.
+	 * 
+	 * @param pis
+	 * @return {@link Employee}
+	 */
+	public Employee findByPis(String pis);
 
 }

@@ -2,39 +2,36 @@ package com.timerecordersystem.resource;
 
 import java.time.LocalDateTime;
 
+import com.timerecordersystem.model.TimeRecorder;
+
 /**
- * Classe auxiliar para registro do ponto.
+ * Classe auxiliar para o registro. 
  * 
  * @author ezequias.oliveira
  *
  */
-public class TimeRecorderResource {
-
+public class RecordResource {
+	
 	/**
-	 * Data da batida do ponto.
+	 * Data que bateu o ponto.
 	 */
 	private LocalDateTime momment;
-	/**
-	 * PIS do empregado.
-	 */
-	private Long pis;
-	
-	public TimeRecorderResource() {
+
+	public RecordResource() {
 		super();
 	}
 	
+	public RecordResource(final TimeRecorder entity) {
+		this.setMomment(entity.getMomment());
+	}
+
 	public LocalDateTime getMomment() {
 		return momment;
 	}
+
 	public void setMomment(LocalDateTime momment) {
 		this.momment = momment;
 	}
-	public Long getPis() {
-		return pis;
-	}
-	public void setPis(Long pis) {
-		this.pis = pis;
-	}
 	
-	
+
 }

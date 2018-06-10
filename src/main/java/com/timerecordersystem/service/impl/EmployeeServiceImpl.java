@@ -28,4 +28,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDAO.findById(id).orElse(null);
 	}
 
+	@Override
+	public Employee findByPis(final String pis) {
+		return this.employeeDAO.findByPis(pis);
+	}
+
 }

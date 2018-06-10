@@ -1,6 +1,7 @@
 package com.timerecordersystem.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.timerecordersystem.model.Employee;
 import com.timerecordersystem.model.Worked;
@@ -29,4 +30,13 @@ public interface WorkedService {
 	 * @return {@link Worked}
 	 */
 	public Worked findByEmployeeAndMomment(Employee employee, LocalDate momment);
+	
+	/**
+	 * Busca os dias trabalhado, pelo funcionario informado.
+	 * 
+	 * @param employee
+	 * @param momment
+	 * @return uma lista de {@link Worked}, ou array vazio
+	 */
+	public List<Worked> listDaysWorked(Employee employee, LocalDate momment);
 }
