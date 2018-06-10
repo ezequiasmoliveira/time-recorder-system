@@ -1,7 +1,7 @@
 package com.timerecordersystem.model;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ public class Worked extends AbstractEntity{
 	@Column(name="momment", nullable = false)
 	private LocalDate momment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<TimeRecorder> records;
+	private LinkedList<TimeRecorder> records;
 	
 	public Worked() {
 		super();
@@ -51,10 +51,10 @@ public class Worked extends AbstractEntity{
 	public void setMomment(LocalDate momment) {
 		this.momment = momment;
 	}
-	public List<TimeRecorder> getRecords() {
+	public LinkedList<TimeRecorder> getRecords() {
 		return records;
 	}
-	public void setRecords(List<TimeRecorder> records) {
+	public void setRecords(LinkedList<TimeRecorder> records) {
 		this.records = records;
 	}
 
