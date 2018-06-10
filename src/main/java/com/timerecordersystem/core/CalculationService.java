@@ -30,5 +30,13 @@ public interface CalculationService {
 	 * @return milissegundos trabalhado {@link BigDecimal}
 	 */
 	public BigDecimal workedTime(final LinkedList<Worked> works);
+	
+	/**
+	 * Calcula tempo trabalhado.
+	 * 
+	 * @param records batidas registrada
+	 * @return tempo trabalhado, em minutos {@link Long}
+	 */
+	public Long calculateTimeWorked(List<TimeRecorder> records);
 
 }

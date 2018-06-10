@@ -13,7 +13,7 @@ import com.timerecordersystem.model.Worked;
  * @author ezequias.oliveira
  *
  */
-public class WorkedResource {
+public class WorkingDayResource {
 
 	/**
 	 * Data de trabalho.
@@ -28,11 +28,11 @@ public class WorkedResource {
 	 */
 	private Long breakTime;
 	
-	public WorkedResource() {
+	public WorkingDayResource() {
 		super();
 	}
 	
-	public WorkedResource(final Worked entity) {
+	public WorkingDayResource(final Worked entity) {
 		this.setMomment(entity.getMomment());
 		
 		List<RecordResource> recordsResource = new ArrayList<>();

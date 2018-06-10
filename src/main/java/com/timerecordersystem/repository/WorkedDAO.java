@@ -28,4 +28,5 @@ public interface WorkedDAO extends CrudRepository<Worked, Long>{
 	 * @return uma lista de {@link Worked}, ou array vazio
 	 */
 	public List<Worked> findByEmployee(Employee employee);
+	
 }

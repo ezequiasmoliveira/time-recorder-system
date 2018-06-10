@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +28,7 @@ public class Worked extends AbstractEntity{
 	@Column(name="momment", nullable = false)
 	private LocalDate momment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OrderBy("momment ASC")
 	private List<TimeRecorder> records;
 	
 	public Worked() {

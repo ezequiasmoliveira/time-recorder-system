@@ -13,7 +13,7 @@ import com.timerecordersystem.model.TimeRecorder;
 public class RecordResource {
 	
 	/**
-	 * Data que bateu o ponto.
+	 * Data da batida do ponto.
 	 */
 	private LocalDateTime momment;
 
@@ -24,11 +24,17 @@ public class RecordResource {
 	public RecordResource(final TimeRecorder entity) {
 		this.setMomment(entity.getMomment());
 	}
-
+	/**
+	 * Retorna a data batida do ponto.
+	 * @return {@link LocalDateTime}
+	 */
 	public LocalDateTime getMomment() {
 		return momment;
 	}
-
+	/**
+	 * Recebe a data batida do ponto.
+	 * @param momment
+	 */
 	public void setMomment(LocalDateTime momment) {
 		this.momment = momment;
 	}

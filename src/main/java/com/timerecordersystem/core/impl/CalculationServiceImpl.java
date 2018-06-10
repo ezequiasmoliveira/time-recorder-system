@@ -17,7 +17,7 @@ public class CalculationServiceImpl implements CalculationService {
 
 	@Override
 	public Long breakTime(final List<TimeRecorder> records) {
-		final Long minutes = this.calculateMinutesWorked(records);
+		final Long minutes = this.calculateTimeWorked(records);
 		
 		return this.calculateBreak(minutes / 60);
 	}
@@ -46,6 +46,26 @@ public class CalculationServiceImpl implements CalculationService {
 		}
         	
 		return time;
+	}
+	
+	@Override
+	public Long calculateTimeWorked(final List<TimeRecorder> records) {
+		
+		LocalDateTime referenceDate = null;
+		Long workTime = 0L;
+		for (TimeRecorder record : records) {
+			
+			if (referenceDate == null) {
+				referenceDate = record.getMomment();
+			} else {
+				final Duration time = Duration.between(referenceDate, record.getMomment());
+				
+				workTime = workTime + time.toMinutes();
+				referenceDate = null;
+			}
+		}
+		
+		return workTime;
 	}
 	
 	/**
@@ -100,8 +120,6 @@ public class CalculationServiceImpl implements CalculationService {
 		return workTime;
 	}
 	
-	
-	
 	/**
 	 * Calcula o tempo trabalhado após as 22:00hs e antes das 7:00hs, adicionando um 
 	 * quinto ao tempo trabalhado (t + (t / 5)). 
@@ -117,32 +135,6 @@ public class CalculationServiceImpl implements CalculationService {
 		
 		return nightWork;
 	}
-	
-	/**
-	 * Calcula os minutos trabalhado.
-	 * 
-	 * @param records batidas registrada
-	 * @return quantidade de minutos {@link Long}
-	 */
-	private Long calculateMinutesWorked(final List<TimeRecorder> records) {
-		
-		LocalDateTime referenceDate = null;
-		Long workTime = 0L;
-		for (TimeRecorder record : records) {
-			
-			if (referenceDate == null) {
-				referenceDate = record.getMomment();
-			} else {
-				final Duration time = Duration.between(referenceDate, record.getMomment());
-				
-				workTime = workTime + time.toMinutes();
-				referenceDate = null;
-			}
-		}
-		
-		return workTime;
-	}
-	
 	
 	/**
 	 * Calcula o tempo de descanço.
