@@ -30,10 +30,11 @@ public class Employee extends AbstractEntity {
 		super();
 	}
 	
-	public Employee(String name, String pis) {
+	public Employee(String name, String pis, String password) {
 		super();
 		this.name = name;
 		this.pis = pis;
+		this.password = password;
 	}
 
 	public String getName() {

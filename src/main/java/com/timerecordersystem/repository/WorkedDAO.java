@@ -29,4 +29,14 @@ public interface WorkedDAO extends CrudRepository<Worked, Long>{
 	 */
 	public List<Worked> findByEmployee(Employee employee);
 	
+	/**
+	 * Busca os dias trabalhado, pelo funcionário informado e intervalo de data.
+	 * 
+	 * @param firstMomment
+	 * @param lastMomment
+	 * @param employee
+	 * @return uma lista de {@link Worked}, ou array vazio
+	 */
+	public List<Worked> findByMommentBetweenAndEmployee(LocalDate firstMomment, LocalDate lastMomment, Employee employee);
+	
 }

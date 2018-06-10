@@ -39,4 +39,13 @@ public interface WorkedService {
 	 * @return uma lista de {@link Worked}, ou array vazio
 	 */
 	public List<Worked> listDaysWorked(Employee employee, LocalDate momment);
+	
+	/**
+	 * Busca os dias trabalhado, pelo funcionario informado.
+	 * 
+	 * @param employee
+	 * @param momment
+	 * @return uma lista de {@link Worked}, ou array vazio
+	 */
+	public List<Worked> listByEmployeeAndMomment(Employee employee, LocalDate momment);
 }
