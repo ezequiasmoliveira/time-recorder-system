@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +54,9 @@ public class TimeRecorderRestController {
 	 */
 	@PostMapping("/records")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Registra o ponto.")
-	public ResponseEntity<?> recorder(@RequestBody TimeRecorderResource resource){
+	public ResponseEntity<?> recorder(@RequestBody TimeRecorderResource resource, 
+			@AuthenticationPrincipal UserDetails userDetails){
+		
 		final Employee employee = this.employeeService.findByPis(resource.getPis().toString());
 		
 		this.timeRecorderService.recorder(employee, new TimeRecorder(resource.getMomment()));
@@ -64,7 +68,8 @@ public class TimeRecorderRestController {
 	@GetMapping("/employees/{pis}/records")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Lista os registros do ponto.")
 	public ResponseEntity<?> recordList(@PathVariable Long pis, 
-			@RequestParam(name = "momment", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment) {
+			@RequestParam(name = "momment", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment, 
+			@AuthenticationPrincipal UserDetails userDetails) {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		final List<Worked> daysWorkeds = this.workedService.listDaysWorked(employee, momment);
@@ -85,7 +90,8 @@ public class TimeRecorderRestController {
 	@GetMapping("/employees/{pis}/worked-hours")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Horas trabalhadas.")
 	public ResponseEntity<?> workedHours(@PathVariable Long pis, 
-			@RequestParam(name = "momment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment) {
+			@RequestParam(name = "momment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment, 
+			@AuthenticationPrincipal UserDetails userDetails) {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		final Worked workedDay = this.workedService.findByEmployeeAndMomment(employee, momment);
@@ -101,7 +107,8 @@ public class TimeRecorderRestController {
 	@GetMapping("/employees/{pis}/break-times")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Informa se falta algum intervalo de descanso.")
 	public ResponseEntity<?> breakTime(@PathVariable Long pis, 
-			@RequestParam(name = "momment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment) {
+			@RequestParam(name = "momment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate momment, 
+			@AuthenticationPrincipal UserDetails userDetails) {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		final Worked worked = this.workedService.findByEmployeeAndMomment(employee, momment);
