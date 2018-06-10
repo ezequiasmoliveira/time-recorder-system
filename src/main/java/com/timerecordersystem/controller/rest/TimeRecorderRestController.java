@@ -18,7 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@Api(value="Time Recorder", description="Operações referente ao resgistro de ponto.")
+@Api(value="Time Recorder",  description="Operações referente ao resgistro de ponto.")
 @Transactional(rollbackFor = Exception.class)
 public class TimeRecorderRestController {
 	
@@ -43,5 +43,5 @@ public class TimeRecorderRestController {
 		// TODO - implementar mensagem de resposta
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-
+	
 }
