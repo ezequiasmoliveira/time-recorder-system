@@ -2,6 +2,7 @@ package com.timerecordersystem.core;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.timerecordersystem.model.TimeRecorder;
 import com.timerecordersystem.model.Worked;
@@ -20,7 +21,7 @@ public interface CalculationService {
 	 * @param records batidas registrada
 	 * @return minutos de descanso {@link Long} 
 	 */
-	public Long breakTime(final LinkedList<TimeRecorder> records);
+	public Long breakTime(final List<TimeRecorder> records);
 	
 	/**
 	 * Calcula o tempo trabalhado.
@@ -29,5 +30,13 @@ public interface CalculationService {
 	 * @return milissegundos trabalhado {@link BigDecimal}
 	 */
 	public BigDecimal workedTime(final LinkedList<Worked> works);
+	
+	/**
+	 * Calcula tempo trabalhado.
+	 * 
+	 * @param records batidas registrada
+	 * @return tempo trabalhado, em minutos {@link Long}
+	 */
+	public Long calculateTimeWorked(List<TimeRecorder> records);
 
 }

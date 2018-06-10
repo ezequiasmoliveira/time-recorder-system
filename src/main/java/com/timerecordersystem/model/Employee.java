@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Classe que representa as informações do funcionário.
  * 
@@ -18,8 +20,11 @@ public class Employee extends AbstractEntity {
 	
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
-	@Column(name = "pis", nullable = false, length = 12)
+	@Column(name = "pis", nullable = false, length = 12, unique = true)
 	private String pis;
+	@JsonIgnore
+	@Column(name = "password", nullable = false)
+	private String password;
 	
 	public Employee() {
 		super();
@@ -42,6 +47,12 @@ public class Employee extends AbstractEntity {
 	}
 	public void setPis(String pis) {
 		this.pis = pis;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

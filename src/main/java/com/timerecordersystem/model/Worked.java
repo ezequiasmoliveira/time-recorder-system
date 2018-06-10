@@ -1,7 +1,7 @@
 package com.timerecordersystem.model;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -27,7 +28,8 @@ public class Worked extends AbstractEntity{
 	@Column(name="momment", nullable = false)
 	private LocalDate momment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private LinkedList<TimeRecorder> records;
+	@OrderBy("momment ASC")
+	private List<TimeRecorder> records;
 	
 	public Worked() {
 		super();
@@ -51,10 +53,10 @@ public class Worked extends AbstractEntity{
 	public void setMomment(LocalDate momment) {
 		this.momment = momment;
 	}
-	public LinkedList<TimeRecorder> getRecords() {
+	public List<TimeRecorder> getRecords() {
 		return records;
 	}
-	public void setRecords(LinkedList<TimeRecorder> records) {
+	public void setRecords(List<TimeRecorder> records) {
 		this.records = records;
 	}
 

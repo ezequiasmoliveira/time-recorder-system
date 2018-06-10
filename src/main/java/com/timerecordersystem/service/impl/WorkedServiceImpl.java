@@ -1,6 +1,8 @@
 package com.timerecordersystem.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,19 @@ public class WorkedServiceImpl implements WorkedService {
 	@Override
 	public Worked findByEmployeeAndMomment(final Employee employee, final LocalDate momment) {
 		return this.workedDAO.findByEmployeeAndMomment(employee, momment);
+	}
+
+	@Override
+	public List<Worked> listDaysWorked(final Employee employee, final LocalDate momment) {
+		List<Worked> workeds = new ArrayList<>();
+		
+		if (momment == null) {
+			workeds = this.workedDAO.findByEmployee(employee);
+		}else {
+			workeds.add(this.workedDAO.findByEmployeeAndMomment(employee, momment));
+		}
+		
+		return workeds;
 	}
 
 }

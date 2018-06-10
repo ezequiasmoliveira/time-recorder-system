@@ -1,6 +1,7 @@
 package com.timerecordersystem.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -19,4 +20,13 @@ public interface WorkedDAO extends CrudRepository<Worked, Long>{
 	 * @return {@link Worked}
 	 */
 	public Worked findByEmployeeAndMomment(Employee employee, LocalDate momment); 
+	
+	/**
+	 * Busca os dias trabalhado, pelo funcionário informado.
+	 * 
+	 * @param employee
+	 * @return uma lista de {@link Worked}, ou array vazio
+	 */
+	public List<Worked> findByEmployee(Employee employee);
+	
 }
