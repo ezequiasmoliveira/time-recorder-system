@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timerecordersystem.core.CalculationService;
+import com.timerecordersystem.erro.BusinessException;
 import com.timerecordersystem.model.Employee;
 import com.timerecordersystem.model.TimeRecorder;
 import com.timerecordersystem.model.Worked;
@@ -48,21 +49,25 @@ public class TimeRecorderRestController {
 	/**
 	 * Registra batida do ponto.
 	 * 
+	 * @param pis
 	 * @param resource
 	 * @return
+	 * @throws BusinessException
 	 */
 	@PostMapping("/employees/{pis}/records")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Registra o ponto.")
-	public ResponseEntity<?> recorder(@PathVariable Long pis, @RequestBody TimeRecorderResource resource){
+	public ResponseEntity<?> recorder(@PathVariable Long pis, @RequestBody TimeRecorderResource resource) throws BusinessException {
 		
 		final Employee employee = this.employeeService.findByPis(resource.getPis().toString());
 		if (employee == null) {
 			throw new ResourceNotFoundException("Employee not found for PIS: "+ resource.getPis());
 		}
-		
 		this.timeRecorderService.recorder(employee, new TimeRecorder(resource.getMomment()));
 		
 		final Worked dayWorked = this.workedService.findByEmployeeAndMomment(employee, resource.getMomment().toLocalDate());
+		final List<TimeRecorder> records = this.timeRecorderService.findByWorked(dayWorked);
+		
+		dayWorked.setRecords(records);
 		
 		final WorkingDayResource workingDayResource = new WorkingDayResource(dayWorked);
 		final Long breakTime = this.calculationService.breakTime(dayWorked.getRecords());
@@ -83,15 +88,15 @@ public class TimeRecorderRestController {
 		final List<Worked> daysWorkeds = this.workedService.listByEmployeeAndMomment(employee, momment);
 		
 		List<WorkingDayResource> resources = new ArrayList<>();
-		for (Worked worked : daysWorkeds) {
-			WorkingDayResource resource = new WorkingDayResource(worked);
+		daysWorkeds.stream().filter(work-> work != null).forEach(dayWork -> {
+			final WorkingDayResource resource = new WorkingDayResource(dayWork);
 			
-			final Long breakTime = this.calculationService.breakTime(worked.getRecords());
+			final Long breakTime = this.calculationService.breakTime(dayWork.getRecords());
 			resource.setBreakTime(breakTime);
 			
 			resources.add(resource);
-		}
-	
+		});
+		
 		return new ResponseEntity<>(resources, HttpStatus.OK);
 	}
 	
@@ -104,17 +109,22 @@ public class TimeRecorderRestController {
 		if (employee == null) {
 			throw new ResourceNotFoundException("Employee not found for PIS: "+ pis);
 		}
+		
 		final Worked workedDay = this.workedService.findByEmployeeAndMomment(employee, momment);
-		final List<Worked> workedMonth = this.workedService.listDaysWorked(employee, momment);
-		
-		Long hoursWorkedMonth = 0L;
-		for (Worked worked : workedMonth) {
-			hoursWorkedMonth = hoursWorkedMonth + this.calculationService.calculateTimeWorked(worked.getRecords());
+		if (workedDay != null) {
+			final List<Worked> workedMonth = this.workedService.listDaysWorked(employee, momment);
+			
+			Long hoursWorkedMonth = 0L;
+			for (Worked worked : workedMonth) {
+				hoursWorkedMonth = hoursWorkedMonth + this.calculationService.calculateTimeWorked(worked.getRecords());
+			}
+			
+			final HoursWorkedResource resource = new HoursWorkedResource();
+			resource.setHoursWorkedDay(this.calculationService.calculateTimeWorked(workedDay.getRecords()));
+			resource.setHoursWorkedMonth(hoursWorkedMonth);
+			
+			return new ResponseEntity<>(hoursWorkedMonth, HttpStatus.OK);
 		}
-		
-		final HoursWorkedResource resource = new HoursWorkedResource();
-		resource.setHoursWorkedDay(this.calculationService.calculateTimeWorked(workedDay.getRecords()));
-		resource.setHoursWorkedMonth(hoursWorkedMonth);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
