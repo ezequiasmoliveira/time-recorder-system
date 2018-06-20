@@ -1,4 +1,4 @@
-package com.timerecordersystem;
+package com.timerecordersystem.repository;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
@@ -6,14 +6,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.timerecordersystem.model.Employee;
-import com.timerecordersystem.repository.EmployeeDAO;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class EmployeeDAOTest {
 	
 	@Autowired

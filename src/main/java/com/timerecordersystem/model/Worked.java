@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * Classe que representa o dia trabalhado pelo funcionário.
@@ -23,22 +25,24 @@ import javax.persistence.Table;
 public class Worked extends AbstractEntity{
 
 	private static final long serialVersionUID = 1868284541090263513L;
+	@NotNull(message = "Employee field is required")
 	@ManyToOne
 	private Employee employee;
-	@Column(name="momment", nullable = false)
-	private LocalDate momment;
+	@NotNull(message = "Employee field is required")
+	@Column(name="moment")
+	private LocalDate moment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@OrderBy("momment ASC")
+	@OrderBy("moment ASC")
 	private List<TimeRecorder> records;
 	
 	public Worked() {
 		super();
 	}
 	
-	public Worked(Employee employee, LocalDate momment) {
+	public Worked(Employee employee, LocalDate moment) {
 		super();
 		this.employee = employee;
-		this.momment = momment;
+		this.moment = moment;
 	}
 
 	public Employee getEmployee() {
@@ -47,11 +51,11 @@ public class Worked extends AbstractEntity{
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	public LocalDate getMomment() {
-		return momment;
+	public LocalDate getMoment() {
+		return moment;
 	}
-	public void setMomment(LocalDate momment) {
-		this.momment = momment;
+	public void setMoment(LocalDate moment) {
+		this.moment = moment;
 	}
 	public List<TimeRecorder> getRecords() {
 		return records;
@@ -65,7 +69,7 @@ public class Worked extends AbstractEntity{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((employee == null) ? 0 : employee.hashCode());
-		result = prime * result + ((momment == null) ? 0 : momment.hashCode());
+		result = prime * result + ((moment == null) ? 0 : moment.hashCode());
 		result = prime * result + ((records == null) ? 0 : records.hashCode());
 		return result;
 	}
@@ -84,10 +88,10 @@ public class Worked extends AbstractEntity{
 				return false;
 		} else if (!employee.equals(other.employee))
 			return false;
-		if (momment == null) {
-			if (other.momment != null)
+		if (moment == null) {
+			if (other.moment != null)
 				return false;
-		} else if (!momment.equals(other.momment))
+		} else if (!moment.equals(other.moment))
 			return false;
 		if (records == null) {
 			if (other.records != null)
@@ -99,7 +103,7 @@ public class Worked extends AbstractEntity{
 
 	@Override
 	public String toString() {
-		return "Worked [employee=" + employee + ", momment=" + momment + ", records=" + records + "]";
+		return "Worked [employee=" + employee + ", moment=" + moment + ", records=" + records + "]";
 	}
 	
 }

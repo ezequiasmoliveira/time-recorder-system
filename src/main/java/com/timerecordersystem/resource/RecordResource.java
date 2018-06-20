@@ -15,28 +15,28 @@ public class RecordResource {
 	/**
 	 * Data da batida do ponto.
 	 */
-	private LocalDateTime momment;
+	private LocalDateTime moment;
 
 	public RecordResource() {
 		super();
 	}
 	
 	public RecordResource(final TimeRecorder entity) {
-		this.setMomment(entity.getMomment());
+		this.setMoment(entity.getMoment());
 	}
 	/**
 	 * Retorna a data batida do ponto.
 	 * @return {@link LocalDateTime}
 	 */
-	public LocalDateTime getMomment() {
-		return momment;
+	public LocalDateTime getMoment() {
+		return moment;
 	}
 	/**
 	 * Recebe a data batida do ponto.
-	 * @param momment
+	 * @param moment
 	 */
-	public void setMomment(LocalDateTime momment) {
-		this.momment = momment;
+	public void setMoment(LocalDateTime moment) {
+		this.moment = moment;
 	}
 	
 

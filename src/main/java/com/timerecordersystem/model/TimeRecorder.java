@@ -20,22 +20,22 @@ public class TimeRecorder extends AbstractEntity {
 	private static final long serialVersionUID = 905382826752249478L;
 	@ManyToOne
 	private Worked worked;
-	@Column(name="momment", nullable = false)
-	private LocalDateTime momment;
+	@Column(name="moment", nullable = false)
+	private LocalDateTime moment;
 	
 	public TimeRecorder() {
 		super();
 	}
 	
-	public TimeRecorder(LocalDateTime momment) {
+	public TimeRecorder(LocalDateTime moment) {
 		super();
-		this.momment = momment;
+		this.moment = moment;
 	}
 
-	public TimeRecorder(Worked worked, LocalDateTime momment) {
+	public TimeRecorder(Worked worked, LocalDateTime moment) {
 		super();
 		this.worked = worked;
-		this.momment = momment;
+		this.moment = moment;
 	}
 
 	public Worked getWorked() {
@@ -44,18 +44,18 @@ public class TimeRecorder extends AbstractEntity {
 	public void setWorked(Worked worked) {
 		this.worked = worked;
 	}
-	public LocalDateTime getMomment() {
-		return momment;
+	public LocalDateTime getMoment() {
+		return moment;
 	}
-	public void setMomment(LocalDateTime momment) {
-		this.momment = momment;
+	public void setMoment(LocalDateTime moment) {
+		this.moment = moment;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((momment == null) ? 0 : momment.hashCode());
+		result = prime * result + ((moment == null) ? 0 : moment.hashCode());
 		result = prime * result + ((worked == null) ? 0 : worked.hashCode());
 		return result;
 	}
@@ -69,10 +69,10 @@ public class TimeRecorder extends AbstractEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		TimeRecorder other = (TimeRecorder) obj;
-		if (momment == null) {
-			if (other.momment != null)
+		if (moment == null) {
+			if (other.moment != null)
 				return false;
-		} else if (!momment.equals(other.momment))
+		} else if (!moment.equals(other.moment))
 			return false;
 		if (worked == null) {
 			if (other.worked != null)
@@ -84,7 +84,7 @@ public class TimeRecorder extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "TimeRecorder [worked=" + worked + ", momment=" + momment + "]";
+		return "TimeRecorder [worked=" + worked + ", moment=" + moment + "]";
 	}
 	
 }

@@ -15,12 +15,12 @@ public interface TimeRecorderDAO extends CrudRepository<TimeRecorder, Long> {
 	/**
 	 * Busca a batida de ponto pelo dia trabalhado.
 	 * 
-	 * @param firstMomment data inicio
-	 * @param lastMomment data fim
+	 * @param firstMoment data inicio
+	 * @param lastMoment data fim
 	 * @param worked dia trabalhado
 	 * @return {@link TimeRecorder}
 	 */
-	public TimeRecorder findByMommentBetweenAndWorked(LocalDateTime firstMomment, LocalDateTime lastMomment, Worked worked);
+	public TimeRecorder findByMomentBetweenAndWorked(LocalDateTime firstMoment, LocalDateTime lastMoment, Worked worked);
 	
 	/**
 	 * Busca os registro de batidas pelo dia trabalhado.

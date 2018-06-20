@@ -27,16 +27,16 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 
 	@Override
 	public void recorder(final Employee employee, final TimeRecorder timeRecorder) throws BusinessException {
-		Worked worked = this.workedService.findByEmployeeAndMomment(employee, timeRecorder.getMomment().toLocalDate());
+		Worked worked = this.workedService.findByEmployeeAndMoment(employee, timeRecorder.getMoment().toLocalDate());
 		
 		if (worked == null) {
-			worked = new Worked(employee, timeRecorder.getMomment().toLocalDate());
+			worked = new Worked(employee, timeRecorder.getMoment().toLocalDate());
 			// registra o dia de trabalho
 			this.workedService.create(worked);
 		}
 		
 		// valida patida do ponto
-		if (this.isExistsRecorded(worked, timeRecorder.getMomment())) {
+		if (this.isExistsRecorded(worked, timeRecorder.getMoment())) {
 			throw new BusinessException("Ponto já registrado.");
 		}
 		timeRecorder.setWorked(worked);
@@ -61,7 +61,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 		final LocalDateTime firstMommet = LocalDateTime.of(momment.getYear(), momment.getMonth(), momment.getDayOfMonth(), momment.getHour(), momment.getMinute(), 00, 000);
 		final LocalDateTime lastMomment = LocalDateTime.of(momment.getYear(), momment.getMonth(), momment.getDayOfMonth(), momment.getHour(), momment.getMinute(), 59, 999);
 		
-		final TimeRecorder timeRecorder = this.timeRecorderDAO.findByMommentBetweenAndWorked(firstMommet, lastMomment, worked);
+		final TimeRecorder timeRecorder = this.timeRecorderDAO.findByMomentBetweenAndWorked(firstMommet, lastMomment, worked);
 		
 		return timeRecorder != null;
 	}

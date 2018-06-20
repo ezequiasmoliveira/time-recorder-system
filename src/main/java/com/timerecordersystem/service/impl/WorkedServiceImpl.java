@@ -25,28 +25,28 @@ public class WorkedServiceImpl implements WorkedService {
 	}
 
 	@Override
-	public Worked findByEmployeeAndMomment(final Employee employee, final LocalDate momment) {
-		return this.workedDAO.findByEmployeeAndMomment(employee, momment);
+	public Worked findByEmployeeAndMoment(final Employee employee, final LocalDate moment) {
+		return this.workedDAO.findByEmployeeAndMoment(employee, moment);
 	}
 
 	@Override
-	public List<Worked> listDaysWorked(final Employee employee, final LocalDate momment) {
+	public List<Worked> listDaysWorked(final Employee employee, final LocalDate moment) {
 		final LocalDate lastDayOfTheMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 		
-		final LocalDate firstMommet = LocalDate.of(momment.getYear(), momment.getMonth(), 01);
-		final LocalDate lastMomment = LocalDate.of(momment.getYear(), momment.getMonth(), lastDayOfTheMonth.getDayOfMonth());
+		final LocalDate firstMomet = LocalDate.of(moment.getYear(), moment.getMonth(), 01);
+		final LocalDate lastMoment = LocalDate.of(moment.getYear(), moment.getMonth(), lastDayOfTheMonth.getDayOfMonth());
 		
-		return this.workedDAO.findByMommentBetweenAndEmployee(firstMommet, lastMomment, employee);
+		return this.workedDAO.findByMomentBetweenAndEmployee(firstMomet, lastMoment, employee);
 	}
 
 	@Override
-	public List<Worked> listByEmployeeAndMomment(final Employee employee, final LocalDate momment) {
+	public List<Worked> listByEmployeeAndMoment(final Employee employee, final LocalDate moment) {
 		List<Worked> workeds = new ArrayList<>();
 		
-		if (momment == null) {
+		if (moment == null) {
 			workeds = this.workedDAO.findByEmployee(employee);
 		}else {
-			workeds.add(this.workedDAO.findByEmployeeAndMomment(employee, momment));
+			workeds.add(this.workedDAO.findByEmployeeAndMoment(employee, moment));
 		}
 		
 		return workeds;

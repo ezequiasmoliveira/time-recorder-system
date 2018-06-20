@@ -1,4 +1,4 @@
-package com.timerecordersystem;
+package com.timerecordersystem.repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,18 +9,17 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.timerecordersystem.model.Employee;
 import com.timerecordersystem.model.TimeRecorder;
 import com.timerecordersystem.model.Worked;
-import com.timerecordersystem.repository.EmployeeDAO;
-import com.timerecordersystem.repository.TimeRecorderDAO;
-import com.timerecordersystem.repository.WorkedDAO;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class TimeRecorderDAOTest {
 
 	@Autowired
@@ -44,7 +43,7 @@ public class TimeRecorderDAOTest {
 		this.timeRecorderDAO.save(timeRecorder);
 		
 		Assertions.assertThat(timeRecorder.getId()).isNotNull();
-		Assertions.assertThat(timeRecorder.getMomment()).isNotNull();
+		Assertions.assertThat(timeRecorder.getMoment()).isNotNull();
 		Assertions.assertThat(timeRecorder.getWorked()).isNotNull();
 	}
 }

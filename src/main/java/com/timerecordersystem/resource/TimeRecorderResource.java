@@ -13,7 +13,7 @@ public class TimeRecorderResource {
 	/**
 	 * Data da batida do ponto.
 	 */
-	private LocalDateTime momment;
+	private LocalDateTime moment;
 	/**
 	 * PIS do empregado.
 	 */
@@ -27,15 +27,15 @@ public class TimeRecorderResource {
 	 * Retorna a data da batida do ponto.
 	 * @return {@link LocalDateTime}
 	 */
-	public LocalDateTime getMomment() {
-		return momment;
+	public LocalDateTime getMoment() {
+		return moment;
 	}
 	/**
 	 * Recebe a data da batida do ponto.
-	 * @param momment
+	 * @param moment
 	 */
-	public void setMomment(LocalDateTime momment) {
-		this.momment = momment;
+	public void setMoment(LocalDateTime moment) {
+		this.moment = moment;
 	}
 	/**
 	 * Retorna o PIS do empregado.
