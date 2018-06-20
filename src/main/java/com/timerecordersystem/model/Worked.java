@@ -21,15 +21,15 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "worked")
+@Table(name = "WORKED")
 public class Worked extends AbstractEntity{
 
 	private static final long serialVersionUID = 1868284541090263513L;
 	@NotNull(message = "Employee field is required")
 	@ManyToOne
 	private Employee employee;
-	@NotNull(message = "Employee field is required")
-	@Column(name="moment")
+	@NotNull(message = "Moment field is required")
+	@Column(name="MOMENT")
 	private LocalDate moment;
 	@OneToMany(mappedBy = "worked", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@OrderBy("moment ASC")

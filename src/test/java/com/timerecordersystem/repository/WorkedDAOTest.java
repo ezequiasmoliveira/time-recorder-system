@@ -34,7 +34,7 @@ public class WorkedDAOTest {
 	
 	@Test
 	public void createShouldPersisteData() {
-		final Employee employee = new Employee("funcionário 2", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+		final Employee employee = new Employee("funcionário 1", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
@@ -47,12 +47,26 @@ public class WorkedDAOTest {
 	}
 	
 	@Test
-	public void createShouldThrowConstraintViolationException() {
+	public void createWithoutEmployeeShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Employee field is required");
         
         final Worked worked = new Worked();
         worked.setMoment(LocalDate.now());
+        
+		this.workedDAO.save(worked);
+	}
+	
+	@Test
+	public void createWithoutMomentShouldThrowConstraintViolationException() {
+		thrown.expect(ConstraintViolationException.class);
+        thrown.expectMessage("Moment field is required");
+        
+        final Employee employee = new Employee("funcionário 2", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+        this.employeeDAO.save(employee);
+        
+        final Worked worked = new Worked();
+        worked.setEmployee(employee);
         
 		this.workedDAO.save(worked);
 	}

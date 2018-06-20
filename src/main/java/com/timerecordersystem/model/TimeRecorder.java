@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 /**
  * Classe que representa a batida do ponto.
@@ -14,13 +16,15 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "time_recorder")
+@Table(name = "TIME_RECORDER")
 public class TimeRecorder extends AbstractEntity {
 
 	private static final long serialVersionUID = 905382826752249478L;
+	@NotNull(message = "Worked field is required")
 	@ManyToOne
 	private Worked worked;
-	@Column(name="moment", nullable = false)
+	@NotNull(message = "Moment field is required")
+	@Column(name="MOMENT", unique = true)
 	private LocalDateTime moment;
 	
 	public TimeRecorder() {
