@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 	private WorkedService workedService;
 
 	@Override
-	public void recorder(final Employee employee, final TimeRecorder timeRecorder) throws BusinessException {
+	public void recorder(final Employee employee, final TimeRecorder timeRecorder) throws BusinessException, DataIntegrityViolationException {
 		Worked worked = this.workedService.findByEmployeeAndMoment(employee, timeRecorder.getMoment().toLocalDate());
 		
 		if (worked == null) {
@@ -60,23 +61,6 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 	@Override
 	public List<TimeRecorder> findByWorked(final Worked worked) {
 		return this.timeRecorderDAO.findByWorked(worked);
-	}
-
-	/**
-	 * Valida se o ponto já foi batido no minuto atual.<br>
-	 * Obs. só é permitido uma batida por minuto.
-	 * 
-	 * @param worked
-	 * @param momment
-	 * @return {@link Boolean}
-	 */
-	private Boolean isExistsRecorded(final Worked worked, final LocalDateTime momment) {
-		final LocalDateTime firstMommet = LocalDateTime.of(momment.getYear(), momment.getMonth(), momment.getDayOfMonth(), momment.getHour(), momment.getMinute(), 00, 000);
-		final LocalDateTime lastMomment = LocalDateTime.of(momment.getYear(), momment.getMonth(), momment.getDayOfMonth(), momment.getHour(), momment.getMinute(), 59, 999);
-		
-		final TimeRecorder timeRecorder = this.timeRecorderDAO.findByMomentBetweenAndWorked(firstMommet, lastMomment, worked);
-		
-		return timeRecorder != null;
 	}
 
 }

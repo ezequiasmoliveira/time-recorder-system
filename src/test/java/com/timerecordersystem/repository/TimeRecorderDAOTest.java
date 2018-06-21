@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.timerecordersystem.model.Employee;
@@ -47,39 +48,28 @@ public class TimeRecorderDAOTest {
 		
 		this.timeRecorderDAO.save(timeRecorder);
 		
-		final TimeRecorder timeRecorder2 = new TimeRecorder(worked, LocalDateTime.now());
-		this.timeRecorderDAO.save(timeRecorder2);
-		
 		Assertions.assertThat(timeRecorder.getId()).isNotNull();
 		Assertions.assertThat(timeRecorder.getMoment()).isNotNull();
 		Assertions.assertThat(timeRecorder.getWorked()).isNotNull();
 	}
 	
 	@Test
-	public void create2ShouldPersisteData() {
-		final Employee employee = new Employee("funcionário 1", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+	public void createDuplicateShouldThrowDataIntegrityViolationException() {
+		thrown.expect(DataIntegrityViolationException.class);
+		
+		final Employee employee = new Employee("funcionário 1", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
 		this.workedDAO.save(worked);
 		
-		LocalDateTime time = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute());
+		final LocalDateTime time = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute());
 		
 		final TimeRecorder timeRecorder = new TimeRecorder(worked, time);
-		
 		this.timeRecorderDAO.save(timeRecorder);
 		
-		try {
-			
-			final TimeRecorder timeRecorder2 = new TimeRecorder(worked, time);
-			this.timeRecorderDAO.save(timeRecorder2);
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-		
-		Assertions.assertThat(timeRecorder.getId()).isNotNull();
-		Assertions.assertThat(timeRecorder.getMoment()).isNotNull();
-		Assertions.assertThat(timeRecorder.getWorked()).isNotNull();
+		final TimeRecorder timeRecorder2 = new TimeRecorder(worked, time);
+		this.timeRecorderDAO.save(timeRecorder2);
 	}
 	
 	@Test
@@ -109,7 +99,7 @@ public class TimeRecorderDAOTest {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Moment field is required");
         
-        final Employee employee = new Employee("funcionário 2", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+        final Employee employee = new Employee("funcionário 2", "12345678912", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
@@ -123,7 +113,7 @@ public class TimeRecorderDAOTest {
 	
 	@Test
 	public void findByWorkedShouldReturnData() {
-		final Employee employee = new Employee("funcionário 3", "12345678912", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+		final Employee employee = new Employee("funcionário 3", "12345678913", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
@@ -147,7 +137,7 @@ public class TimeRecorderDAOTest {
 	
 	@Test
 	public void findByMomentBetweenAndWorkedShouldReturnData() {
-		final Employee employee = new Employee("funcionário 4", "12345678913", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+		final Employee employee = new Employee("funcionário 4", "12345678914", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
