@@ -2,7 +2,7 @@ package com.timerecordersystem.repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
@@ -37,24 +37,7 @@ public class TimeRecorderDAOTest {
 	public ExpectedException thrown = ExpectedException.none();
 	
 	@Test
-	public void createShouldPersisteData() {
-		final Employee employee = new Employee("funcionário 1", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
-		this.employeeDAO.save(employee);
-		
-		final Worked worked = new Worked(employee, LocalDate.now());
-		this.workedDAO.save(worked);
-		
-		final TimeRecorder timeRecorder = new TimeRecorder(worked, LocalDateTime.now());
-		
-		this.timeRecorderDAO.save(timeRecorder);
-		
-		Assertions.assertThat(timeRecorder.getId()).isNotNull();
-		Assertions.assertThat(timeRecorder.getMoment()).isNotNull();
-		Assertions.assertThat(timeRecorder.getWorked()).isNotNull();
-	}
-	
-	@Test
-	public void createDuplicateShouldThrowDataIntegrityViolationException() {
+	public void whenCreateDuplicateTimeRecorder_thenShouldThrowDataIntegrityViolationException() {
 		thrown.expect(DataIntegrityViolationException.class);
 		
 		final Employee employee = new Employee("funcionário 1", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
@@ -73,7 +56,7 @@ public class TimeRecorderDAOTest {
 	}
 	
 	@Test
-	public void createWithoutWorkedANDMomentShouldPersisteData() {
+	public void whenCreateWithoutWorkedAndMoment_thenShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Worked field is required");
         thrown.expectMessage("Moment field is required");
@@ -84,7 +67,7 @@ public class TimeRecorderDAOTest {
 	}
 	
 	@Test
-	public void createWithoutWorkedShouldPersisteData() {
+	public void whenCreateWithoutWorked_thenShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Worked field is required");
         
@@ -95,7 +78,7 @@ public class TimeRecorderDAOTest {
 	}
 	
 	@Test
-	public void createWithoutMomentShouldPersisteData() {
+	public void whenCreateWithoutMoment_thenShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Moment field is required");
         
@@ -112,7 +95,7 @@ public class TimeRecorderDAOTest {
 	}
 	
 	@Test
-	public void findByWorkedShouldReturnData() {
+	public void whenFindByWorked_thenReturn3TimeRecorder() {
 		final Employee employee = new Employee("funcionário 3", "12345678913", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
@@ -123,11 +106,7 @@ public class TimeRecorderDAOTest {
 		final TimeRecorder timeRecorder2 = new TimeRecorder(worked, LocalDateTime.now().plusMinutes(5));
 		final TimeRecorder timeRecorder3 = new TimeRecorder(worked, LocalDateTime.now().plusMinutes(12));
 		
-		List<TimeRecorder> timeRecorders = new ArrayList<>();
-		timeRecorders.add(timeRecorder1);
-		timeRecorders.add(timeRecorder2);
-		timeRecorders.add(timeRecorder3);
-		
+		final List<TimeRecorder> timeRecorders = Arrays.asList(timeRecorder1, timeRecorder2, timeRecorder3);
 		this.timeRecorderDAO.saveAll(timeRecorders);
 		
 		final List<TimeRecorder> timeRecorderTest = this.timeRecorderDAO.findByWorked(worked);
@@ -136,17 +115,23 @@ public class TimeRecorderDAOTest {
 	}
 	
 	@Test
-	public void findByMomentBetweenAndWorkedShouldReturnData() {
+	public void whenFindByMomentBetweenAndWorked_thenReturn3TimeRecorder() {
 		final Employee employee = new Employee("funcionário 4", "12345678914", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
 		final Worked worked = new Worked(employee, LocalDate.now());
 		this.workedDAO.save(worked);
 		
-		final TimeRecorder timeRecorder = new TimeRecorder(worked, LocalDateTime.now());
-		this.timeRecorderDAO.save(timeRecorder);
+		final TimeRecorder timeRecorder1 = new TimeRecorder(worked, LocalDateTime.now());
+		final TimeRecorder timeRecorder2 = new TimeRecorder(worked, LocalDateTime.now().plusMinutes(5));
+		final TimeRecorder timeRecorder3 = new TimeRecorder(worked, LocalDateTime.now().plusMinutes(12));
 		
-		final List<TimeRecorder> timeRecorderTest = this.timeRecorderDAO.findByWorked(worked);
+		final List<TimeRecorder> timeRecorders = Arrays.asList(timeRecorder1, timeRecorder2, timeRecorder3);
+		this.timeRecorderDAO.saveAll(timeRecorders);
+		
+		final LocalDateTime firstMomet = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 0, 0);
+		final LocalDateTime lastMoment = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 23, 59);
+		final List<TimeRecorder> timeRecorderTest = this.timeRecorderDAO.findByMomentBetweenAndWorked(firstMomet, lastMoment, worked);
 		
 		Assertions.assertThat(timeRecorderTest.size()).isEqualTo(3);
 	}

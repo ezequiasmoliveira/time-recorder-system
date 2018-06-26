@@ -23,7 +23,7 @@ public class EmployeeDAOTest {
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
-	public void findByPisShouldReturnData() {
+	public void whenFindByPis_thenEmployeeShouldBeFound() {
 		final Employee employee = new Employee("funcionário 1", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		

@@ -2,7 +2,7 @@ package com.timerecordersystem.repository;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
@@ -33,21 +33,7 @@ public class WorkedDAOTest {
 	public ExpectedException thrown = ExpectedException.none();
 	
 	@Test
-	public void createShouldPersisteData() {
-		final Employee employee = new Employee("funcionário 1", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
-		this.employeeDAO.save(employee);
-		
-		final Worked worked = new Worked(employee, LocalDate.now());
-		
-		this.workedDAO.save(worked);
-		Assertions.assertThat(worked.getId()).isNotNull();
-		
-		Assertions.assertThat(worked.getMoment()).isNotNull();
-		Assertions.assertThat(worked.getEmployee()).isNotNull();
-	}
-	
-	@Test
-	public void createWithoutEmployeeShouldThrowConstraintViolationException() {
+	public void whenCreateWithoutEmployee_thenShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Employee field is required");
         
@@ -58,7 +44,7 @@ public class WorkedDAOTest {
 	}
 	
 	@Test
-	public void createWithoutMomentShouldThrowConstraintViolationException() {
+	public void whenCreateWithoutMoment_thenShouldThrowConstraintViolationException() {
 		thrown.expect(ConstraintViolationException.class);
         thrown.expectMessage("Moment field is required");
         
@@ -72,7 +58,7 @@ public class WorkedDAOTest {
 	}
 	
 	@Test
-	public void findByEmployeeAndMommentShouldReturnData() {
+	public void whenFindByEmployeeAndMomment_thenWorkedShouldBeFound() {
 		final Employee employee = new Employee("funcionário 3", "12345678912", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
@@ -87,7 +73,7 @@ public class WorkedDAOTest {
 	}
 	
 	@Test
-	public void findByEmployeeShouldReturnData() {
+	public void giverSetOfWorkeds_whenFindByEmployee_thenReturnAllWorkedOfEmployee() {
 		final Employee employee = new Employee("funcionário 4", "12345678913", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
@@ -99,23 +85,16 @@ public class WorkedDAOTest {
 		final Worked worked6 = new Worked(employee, LocalDate.now().plusMonths(2));
 		final Worked worked7 = new Worked(employee, LocalDate.now().plusMonths(3).plusDays(27));
 		
-		final List<Worked> workeds = new ArrayList<>();
-		workeds.add(worked1);
-		workeds.add(worked2);
-		workeds.add(worked3);
-		workeds.add(worked4);
-		workeds.add(worked5);
-		workeds.add(worked6);
-		workeds.add(worked7);
-		
+		final List<Worked> workeds = Arrays.asList(worked1, worked2, worked3, worked4, worked5, worked6, worked7);
 		this.workedDAO.saveAll(workeds);
+		
 		final List<Worked> workedsTest = this.workedDAO.findByEmployee(employee);
 		
 		Assertions.assertThat(workedsTest.size()).isEqualTo(7);
 	}
 	
 	@Test
-	public void findByMommentBetweenAndEmployeeShouldReturnData() {
+	public void giverSetOfWorkeds_whenFindByMomentBetweenAndEmployee_thenReturnAllWorkedOfEmployeeAndBetweenMoment() {
 		final Employee employee = new Employee("funcionário 5", "12345678914", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
 		this.employeeDAO.save(employee);
 		
@@ -129,16 +108,8 @@ public class WorkedDAOTest {
 		final Worked worked6 = new Worked(employee, localDate.plusDays(13));
 		final Worked worked7 = new Worked(employee, localDate.plusDays(29));
 		
-		final List<Worked> workeds = new ArrayList<>();
-		workeds.add(worked1);
-		workeds.add(worked2);
-		workeds.add(worked3);
-		workeds.add(worked4);
-		workeds.add(worked5);
-		workeds.add(worked6);
-		workeds.add(worked7);
-		
-		this.workedDAO.saveAll(workeds);
+		final List<Worked> allWorkeds = Arrays.asList(worked1, worked2, worked3, worked4, worked5, worked6, worked7);
+		this.workedDAO.saveAll(allWorkeds);
 		
 		final LocalDate lastDayOfTheMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 		final LocalDate firstMommet = LocalDate.of(LocalDate.now().getYear(), localDate.getMonth(), 01);

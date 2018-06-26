@@ -11,30 +11,6 @@ import com.timerecordersystem.model.Employee;
 public interface EmployeeService {
 	
 	/**
-	 * Cria um novo funcionário.
-	 * 
-	 * @param employee
-	 * @return {@link Employee}
-	 */
-	public Employee create(Employee employee);
-	
-	/**
-	 * Atualiza as informações do funcionário.
-	 * 
-	 * @param employee
-	 * @return {@link Employee}
-	 */
-	public Employee update(Employee employee);
-	
-	/**
-	 * Busca o funcionário pelo id.
-	 * 
-	 * @param id
-	 * @return {@link Employee}
-	 */
-	public Employee findById(Long id);
-	
-	/**
 	 * Busca o funcionário pelo pis.
 	 * 
 	 * @param pis
