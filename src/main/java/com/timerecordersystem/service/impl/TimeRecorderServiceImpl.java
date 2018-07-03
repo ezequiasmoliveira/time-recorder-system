@@ -36,13 +36,9 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 			this.workedService.create(worked);
 		}
 		
-		timeRecorder.setMoment(this.tratarDataBatida(timeRecorder.getMoment()));
-		
-		// valida patida do ponto
-//		if (this.isExistsRecorded(worked, timeRecorder.getMoment())) {
-//			throw new BusinessException("Ponto já registrado.");
-//		}
+		timeRecorder.setMoment(this.treatDateRecorder(timeRecorder.getMoment()));
 		timeRecorder.setWorked(worked);
+		
 		// registra o batida do ponto
 		this.timeRecorderDAO.save(timeRecorder);
 	}
@@ -53,7 +49,7 @@ public class TimeRecorderServiceImpl implements TimeRecorderService{
 	 * @param timeRecorder
 	 * @return {@link LocalDateTime}
 	 */
-	private LocalDateTime tratarDataBatida(final LocalDateTime timeRecorder) {
+	private LocalDateTime treatDateRecorder(final LocalDateTime timeRecorder) {
 		
 		return LocalDateTime.of(timeRecorder.getYear(), timeRecorder.getMonth(), timeRecorder.getDayOfMonth(), timeRecorder.getHour(), timeRecorder.getMinute());
 	}

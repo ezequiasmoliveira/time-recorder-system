@@ -37,8 +37,8 @@ public class EmployeeServiceImplTest {
 	
 	@Before
     public void setUp() {
-		Employee john = new Employee("john", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
-        Employee alex = new Employee("alex", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");;
+		final Employee john = new Employee("john", "12345678910", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");
+        final Employee alex = new Employee("alex", "12345678911", "$2a$10$a25kI5Gb5uoAocvFXY41duCcuEqZAI6anzeAt4FMsN2khlX4KduxG");;
 
         Mockito.when(employeeDAO.findByPis(john.getPis())).thenReturn(john);
         Mockito.when(employeeDAO.findByPis(alex.getPis())).thenReturn(alex);
@@ -46,7 +46,7 @@ public class EmployeeServiceImplTest {
 	}
 
 	@Test
-	public void gnidufgn() {
+	public void whenFindByPis_thenReturnEmployee() {
 		final Employee john = employeeService.findByPis("12345678910");
 		assertThat(john.getName()).isEqualTo("john");
 		
