@@ -44,6 +44,13 @@ public class Worked extends AbstractEntity{
 		this.employee = employee;
 		this.moment = moment;
 	}
+	
+	public Worked(Long id, Employee employee, LocalDate moment) {
+		super();
+		super.setId(id);
+		this.employee = employee;
+		this.moment = moment;
+	}
 
 	public Employee getEmployee() {
 		return employee;

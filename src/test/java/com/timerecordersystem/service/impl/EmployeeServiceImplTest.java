@@ -21,7 +21,7 @@ import com.timerecordersystem.service.EmployeeService;
 public class EmployeeServiceImplTest {
 
 	@TestConfiguration
-    static class EmployeeServiceImplTestContextConfiguration {
+    static class Config {
   
         @Bean
         public EmployeeService employeeService() {

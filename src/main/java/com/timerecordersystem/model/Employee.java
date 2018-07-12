@@ -36,6 +36,14 @@ public class Employee extends AbstractEntity {
 		this.pis = pis;
 		this.password = password;
 	}
+	
+	public Employee(Long id, String name, String pis, String password) {
+		super();
+		super.setId(id);
+		this.name = name;
+		this.pis = pis;
+		this.password = password;
+	}
 
 	public String getName() {
 		return name;

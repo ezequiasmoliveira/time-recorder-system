@@ -29,7 +29,7 @@ import com.timerecordersystem.service.WorkedService;
 public class TimeRecorderServiceImplTest {
 
 	@TestConfiguration
-    static class TimeRecorderServiceImplTestContextConfiguration {
+    static class Config {
   
         @Bean
         public TimeRecorderService timeRecorderService() {
