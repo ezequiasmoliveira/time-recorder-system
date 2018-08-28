@@ -13,17 +13,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 @Entity
-@Table(name = "employee")
+@Table(name = "EMPLOYEE")
 public class Employee extends AbstractEntity {
 
 	private static final long serialVersionUID = 6474470904398381369L;
 	
-	@Column(name = "name", nullable = false, length = 100)
+	@Column(name = "NAME", nullable = false, length = 100)
 	private String name;
-	@Column(name = "pis", nullable = false, length = 12, unique = true)
+	@Column(name = "PIS", nullable = false, length = 12, unique = true)
 	private String pis;
 	@JsonIgnore
-	@Column(name = "password", nullable = false)
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 	
 	public Employee() {
@@ -32,6 +32,14 @@ public class Employee extends AbstractEntity {
 	
 	public Employee(String name, String pis, String password) {
 		super();
+		this.name = name;
+		this.pis = pis;
+		this.password = password;
+	}
+	
+	public Employee(Long id, String name, String pis, String password) {
+		super();
+		super.setId(id);
 		this.name = name;
 		this.pis = pis;
 		this.password = password;

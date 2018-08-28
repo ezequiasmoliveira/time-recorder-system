@@ -14,21 +14,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 
 	@Override
-	public Employee create(final Employee employee) {
-		return this.employeeDAO.save(employee);
-	}
-
-	@Override
-	public Employee update(final Employee employee) {
-		return this.employeeDAO.save(employee);
-	}
-
-	@Override
-	public Employee findById(final Long id) {
-		return this.employeeDAO.findById(id).orElse(null);
-	}
-
-	@Override
 	public Employee findByPis(final String pis) {
 		return this.employeeDAO.findByPis(pis);
 	}

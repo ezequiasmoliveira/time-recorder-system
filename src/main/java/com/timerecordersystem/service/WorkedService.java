@@ -26,26 +26,26 @@ public interface WorkedService {
 	 * Busca o dia trabalhado, pelo funcinário e data.
 	 * 
 	 * @param employee
-	 * @param momment
+	 * @param moment
 	 * @return {@link Worked}
 	 */
-	public Worked findByEmployeeAndMomment(Employee employee, LocalDate momment);
+	public Worked findByEmployeeAndMoment(Employee employee, LocalDate moment);
+	
+	/**
+	 * Busca os dias trabalhado, do mês e ano informado na data passada por parâmetro.
+	 * 
+	 * @param employee 
+	 * @param moment data
+	 * @return uma lista de {@link Worked}, ou array vazio
+	 */
+	public List<Worked> listDaysWorked(Employee employee, LocalDate moment);
 	
 	/**
 	 * Busca os dias trabalhado, pelo funcionario informado.
 	 * 
 	 * @param employee
-	 * @param momment
+	 * @param moment
 	 * @return uma lista de {@link Worked}, ou array vazio
 	 */
-	public List<Worked> listDaysWorked(Employee employee, LocalDate momment);
-	
-	/**
-	 * Busca os dias trabalhado, pelo funcionario informado.
-	 * 
-	 * @param employee
-	 * @param momment
-	 * @return uma lista de {@link Worked}, ou array vazio
-	 */
-	public List<Worked> listByEmployeeAndMomment(Employee employee, LocalDate momment);
+	public List<Worked> listByEmployeeAndMoment(Employee employee, LocalDate moment);
 }

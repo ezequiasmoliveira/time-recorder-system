@@ -27,7 +27,7 @@ public class CalculationServiceImpl implements CalculationService {
 		BigDecimal time = new BigDecimal(0D);  
 		
 		for (Worked worked : records) {
-			switch (worked.getMomment().getDayOfWeek()) {
+			switch (worked.getMoment().getDayOfWeek()) {
 			case SATURDAY:
 				final Long saturday = this.calculateTimeWorked(worked.getRecords(), Boolean.FALSE);
 				
@@ -56,9 +56,9 @@ public class CalculationServiceImpl implements CalculationService {
 		for (TimeRecorder record : records) {
 			
 			if (referenceDate == null) {
-				referenceDate = record.getMomment();
+				referenceDate = record.getMoment();
 			} else {
-				final Duration time = Duration.between(referenceDate, record.getMomment());
+				final Duration time = Duration.between(referenceDate, record.getMoment());
 				
 				workTime = workTime + time.toMinutes();
 				referenceDate = null;
@@ -84,24 +84,24 @@ public class CalculationServiceImpl implements CalculationService {
 		for (TimeRecorder record : records) {
 			
 			LocalDateTime tempRecord = null;
-			if (calculateNightWork && record.getMomment().getHour() > 21 ) {
+			if (calculateNightWork && record.getMoment().getHour() > 21 ) {
 				final LocalDateTime newRecord = LocalDateTime.of(
-						record.getMomment().getYear(), record.getMomment().getMonth(), record.getMomment().getDayOfMonth(), 22, 00, 00);
+						record.getMoment().getYear(), record.getMoment().getMonth(), record.getMoment().getDayOfMonth(), 22, 00, 00);
 				
-				final Long nightWork = this.calculateNightWork(newRecord, record.getMomment());
+				final Long nightWork = this.calculateNightWork(newRecord, record.getMoment());
 				
 				timeNightWork = (timeNightWork + nightWork);
 				tempRecord = newRecord.minusSeconds(1);
-			}else if (calculateNightWork && record.getMomment().getHour() < 07) {
+			}else if (calculateNightWork && record.getMoment().getHour() < 07) {
 				final LocalDateTime newRecord = LocalDateTime.of(
-						record.getMomment().getYear(), record.getMomment().getMonth(), record.getMomment().getDayOfMonth(), 06, 59, 59);
+						record.getMoment().getYear(), record.getMoment().getMonth(), record.getMoment().getDayOfMonth(), 06, 59, 59);
 				
-				final Long nightWork = this.calculateNightWork(record.getMomment(), newRecord);
+				final Long nightWork = this.calculateNightWork(record.getMoment(), newRecord);
 				
 				timeNightWork = (timeNightWork + nightWork);
 				tempRecord = newRecord.plusSeconds(1);
 			} else {
-				tempRecord = record.getMomment();
+				tempRecord = record.getMoment();
 			}
 			
 		

@@ -13,7 +13,7 @@ public class BreakTimeResource {
 	/**
 	 * Dia trabalhado.
 	 */
-	private LocalDate momment;
+	private LocalDate moment;
 	/**
 	 * Horas Trabalhadas.
 	 */
@@ -31,15 +31,15 @@ public class BreakTimeResource {
 	 * Retorna a data do dia trabalhado.
 	 * @return {@link LocalDate}
 	 */
-	public LocalDate getMomment() {
-		return momment;
+	public LocalDate getMoment() {
+		return moment;
 	}
 	/**
 	 * Recebe o dia trabalhado.
-	 * @param momment
+	 * @param moment
 	 */
-	public void setMomment(LocalDate momment) {
-		this.momment = momment;
+	public void setMoment(LocalDate moment) {
+		this.moment = moment;
 	}
 	/**
 	 * Retorna as horas Trabalhadas.

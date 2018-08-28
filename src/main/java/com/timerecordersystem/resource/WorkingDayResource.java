@@ -18,7 +18,7 @@ public class WorkingDayResource {
 	/**
 	 * Data de trabalho.
 	 */
-	private LocalDate momment;
+	private LocalDate moment;
 	/**
 	 * Registros das batidas do ponto.
 	 */
@@ -33,7 +33,7 @@ public class WorkingDayResource {
 	}
 	
 	public WorkingDayResource(final Worked entity) {
-		this.setMomment(entity.getMomment());
+		this.setMoment(entity.getMoment());
 		
 		List<RecordResource> recordsResource = new ArrayList<>();
 		for (TimeRecorder record : entity.getRecords()) {
@@ -43,11 +43,11 @@ public class WorkingDayResource {
 		this.setRecords(recordsResource);
 	}
 	
-	public LocalDate getMomment() {
-		return momment;
+	public LocalDate getMoment() {
+		return moment;
 	}
-	public void setMomment(LocalDate momment) {
-		this.momment = momment;
+	public void setMoment(LocalDate moment) {
+		this.moment = moment;
 	}
 	public List<RecordResource> getRecords() {
 		return records;
