@@ -2,8 +2,6 @@ package com.timerecordersystem.resource;
 
 import java.time.LocalDateTime;
 
-import com.timerecordersystem.model.TimeRecorder;
-
 /**
  * Classe auxiliar para o registro. 
  * 
@@ -21,9 +19,6 @@ public class RecordResource {
 		super();
 	}
 	
-	public RecordResource(final TimeRecorder entity) {
-		this.setMoment(entity.getMoment());
-	}
 	/**
 	 * Retorna a data batida do ponto.
 	 * @return {@link LocalDateTime}

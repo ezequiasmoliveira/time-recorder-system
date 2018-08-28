@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.timerecordersystem.core.CalculationService;
 import com.timerecordersystem.erro.BusinessException;
+import com.timerecordersystem.erro.HttpException;
 import com.timerecordersystem.model.Employee;
 import com.timerecordersystem.model.TimeRecorder;
 import com.timerecordersystem.model.Worked;
 import com.timerecordersystem.resource.BreakTimeResource;
 import com.timerecordersystem.resource.HoursWorkedResource;
+import com.timerecordersystem.resource.RecordResource;
 import com.timerecordersystem.resource.TimeRecorderResource;
 import com.timerecordersystem.resource.WorkingDayResource;
 import com.timerecordersystem.service.EmployeeService;
@@ -56,46 +57,56 @@ public class TimeRecorderRestController {
 	 */
 	@PostMapping("/employees/{pis}/records")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Registra o ponto.")
-	public ResponseEntity<?> recorder(@PathVariable Long pis, @RequestBody TimeRecorderResource resource) throws BusinessException {
+	public ResponseEntity<?> recorder(@PathVariable Long pis, @RequestBody TimeRecorderResource resource) throws Exception {
 		
 		final Employee employee = this.employeeService.findByPis(resource.getPis().toString());
 		if (employee == null) {
-			throw new ResourceNotFoundException("Employee not found for PIS: "+ resource.getPis());
+			throw new HttpException("Employee not found for PIS: "+ resource.getPis(), HttpStatus.NOT_FOUND);
 		}
 		this.timeRecorderService.recorder(employee, new TimeRecorder(resource.getMoment()));
 		
 		final Worked dayWorked = this.workedService.findByEmployeeAndMoment(employee, resource.getMoment().toLocalDate());
 		final List<TimeRecorder> records = this.timeRecorderService.findByWorked(dayWorked);
 		
-		dayWorked.setRecords(records);
+		List<TimeRecorderResource> resources = new ArrayList<>();
+		records.forEach(timeRecorder -> {
+			TimeRecorderResource recorderResource = new TimeRecorderResource();
+			recorderResource.setMoment(timeRecorder.getMoment());
+			recorderResource.setPis(pis);
+			
+			resources.add(recorderResource);
+		});
 		
-		final WorkingDayResource workingDayResource = new WorkingDayResource(dayWorked);
-		final Long breakTime = this.calculationService.breakTime(dayWorked.getRecords());
-		workingDayResource.setBreakTime(breakTime);
-		
-		return new ResponseEntity<>(workingDayResource, HttpStatus.CREATED);
+		return new ResponseEntity<>(resources, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/employees/{pis}/records")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Lista os registros do ponto.")
 	public ResponseEntity<?> recordList(@PathVariable Long pis, 
-			@RequestParam(name = "moment", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) {
+			@RequestParam(name = "moment", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) throws Exception {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		if (employee == null) {
-			throw new ResourceNotFoundException("Employee not found for PIS: "+ pis);
+			throw new HttpException("Employee not found for PIS: "+ pis, HttpStatus.NOT_FOUND);
 		}
 		final List<Worked> daysWorkeds = this.workedService.listByEmployeeAndMoment(employee, moment);
 		
+		if (daysWorkeds == null || daysWorkeds.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
 		List<WorkingDayResource> resources = new ArrayList<>();
-		daysWorkeds.stream().filter(work-> work != null).forEach(dayWork -> {
-			final WorkingDayResource resource = new WorkingDayResource(dayWork);
+		daysWorkeds.stream()
+			.filter(work -> work != null)
+			.forEach(dayWork -> {
+					final WorkingDayResource resource = this.builderWorkingDayResource(dayWork);
 			
-			final Long breakTime = this.calculationService.breakTime(dayWork.getRecords());
-			resource.setBreakTime(breakTime);
+					final Long breakTime = this.calculationService.breakTime(dayWork.getRecords());
+					resource.setBreakTime(breakTime);
 			
-			resources.add(resource);
-		});
+					resources.add(resource);
+					}
+			);
 		
 		return new ResponseEntity<>(resources, HttpStatus.OK);
 	}
@@ -103,11 +114,11 @@ public class TimeRecorderRestController {
 	@GetMapping("/employees/{pis}/worked-hours")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Horas trabalhadas.")
 	public ResponseEntity<?> workedHours(@PathVariable Long pis, 
-			@RequestParam(name = "moment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) {
+			@RequestParam(name = "moment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) throws Exception {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		if (employee == null) {
-			throw new ResourceNotFoundException("Employee not found for PIS: "+ pis);
+			throw new HttpException("Employee not found for PIS: "+ pis, HttpStatus.NOT_FOUND);
 		}
 		
 		final Worked workedDay = this.workedService.findByEmployeeAndMoment(employee, moment);
@@ -126,22 +137,22 @@ public class TimeRecorderRestController {
 			return new ResponseEntity<>(hoursWorkedMonth, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("/employees/{pis}/break-times")
 	@ApiOperation(tags = { "Time Recorder" }, value = "Informa se falta algum intervalo de descanso.")
 	public ResponseEntity<?> breakTime(@PathVariable Long pis, 
-			@RequestParam(name = "moment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) {
+			@RequestParam(name = "moment") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate moment) throws Exception {
 		
 		final Employee employee = this.employeeService.findByPis(pis.toString());
 		if (employee == null) {
-			throw new ResourceNotFoundException("Employee not found for PIS: "+ pis);
+			throw new HttpException("Employee not found for PIS: "+ pis, HttpStatus.NOT_FOUND);
 		}
 		final Worked worked = this.workedService.findByEmployeeAndMoment(employee, moment);
 		
 		if (worked == null) {
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
 		final BreakTimeResource resource = new BreakTimeResource();
@@ -176,6 +187,28 @@ public class TimeRecorderRestController {
 		final LocalTime workedTimes = LocalTime.of((workedMinutes / 60), (workedMinutes % 60));
 		
 		return workedTimes;
+	}
+	
+	/**
+	 * Monta o {@link WorkingDayResource}.
+	 * 
+	 * @param entity {@link Worked}
+	 * @return {@link WorkingDayResource}
+	 */
+	private WorkingDayResource builderWorkingDayResource(final Worked entity) {
+		WorkingDayResource resource = new WorkingDayResource();
+		resource.setMoment(entity.getMoment());
+		
+		List<RecordResource> recordsResource = new ArrayList<>();
+		entity.getRecords().forEach(record -> {
+			RecordResource recordResource = new RecordResource();
+			recordResource.setMoment(record.getMoment());
+			
+			recordsResource.add(recordResource);
+		});
+		resource.setRecords(recordsResource);
+		
+		return resource;
 	}
 	
 }
